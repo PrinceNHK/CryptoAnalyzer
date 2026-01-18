@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Price Forecasting - Prophet ML</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .controls {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .controls h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary.active {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h4 {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card .value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .stat-card.forecast {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .stat-card.price-up {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .stat-card.metrics {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #333;
+        }
+
+        .stat-card.metrics h4,
+        .stat-card.metrics .label {
+            color: #333;
+        }
+
+        .plots-section {
+            margin-bottom: 30px;
+        }
+
+        .plot-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .plot-container h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .plot-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .metric-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .metric-item h5 {
+            color: #667eea;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .metric-item .value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #1565c0;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .control-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .button-group {
+                width: 100%;
+            }
+
+            button {
+                flex: 1;
+            }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>₿ Bitcoin Price Forecasting</h1>
+            <p>Time Series Analysis with Facebook's Prophet Model</p>
+        </header>
+
+        <div class="content">
+            <!-- Controls Section -->
+            <div class="controls">
+                <h3>⚙️ Forecast Horizon</h3>
+                <div class="control-group">
+                    <span>Select how many days ahead to forecast:</span>
+                    <div class="button-group">
+                        <form method="GET" style="display: inline; margin: 0;">
+                            <button type="submit" name="horizon" value="7" class="btn-primary {% if horizon == 7 %}active{% endif %}">7 Days</button>
+                        </form>
+                        <form method="GET" style="display: inline; margin: 0;">
+                            <button type="submit" name="horizon" value="30" class="btn-primary {% if horizon == 30 %}active{% endif %}">30 Days</button>
+                        </form>
+                        <form method="GET" style="display: inline; margin: 0;">
+                            <button type="submit" name="horizon" value="60" class="btn-primary {% if horizon == 60 %}active{% endif %}">60 Days</button>
+                        </form>
+                        <form method="GET" style="display: inline; margin: 0;">
+                            <button type="submit" name="horizon" value="90" class="btn-primary {% if horizon == 90 %}active{% endif %}">90 Days</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>📊 Current Price</h4>
+                    <div class="value">{{ last_actual_price }}</div>
+                    <small>as of {{ last_date }}</small>
+                </div>
+
+                <div class="stat-card forecast">
+                    <h4>🔮 Forecasted Price</h4>
+                    <div class="value">{{ forecast_price }}</div>
+                    <small style="color: white; opacity: 0.9;">on {{ forecast_date }}</small>
+                </div>
+
+                <div class="stat-card price-up">
+                    <h4>📈 Predicted Change</h4>
+                    <div class="value">{{ pct_change }}</div>
+                    <small>next {{ horizon }} days</small>
+                </div>
+
+                <div class="stat-card metrics">
+                    <h4>✅ Model Accuracy</h4>
+                    <div class="value">{{ "%.2f"|format(metrics.directional_accuracy) }}%</div>
+                    <small>directional accuracy</small>
+                </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <strong>📌 Forecast Range:</strong>
+                Low: {{ forecast_price_low }} | High: {{ forecast_price_high }}<br>
+                <small style="font-size: 0.9em; opacity: 0.9;">95% confidence interval bounds</small>
+            </div>
+
+            <!-- Model Metrics -->
+            <div class="plot-container">
+                <h3>📊 Model Performance Metrics</h3>
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <h5>MAE</h5>
+                        <div class="value">${{ "%.2f"|format(metrics.mae) }}</div>
+                        <small>Mean Absolute Error</small>
+                    </div>
+                    <div class="metric-item">
+                        <h5>RMSE</h5>
+                        <div class="value">${{ "%.2f"|format(metrics.rmse) }}</div>
+                        <small>Root Mean Squared Error</small>
+                    </div>
+                    <div class="metric-item">
+                        <h5>MAPE</h5>
+                        <div class="value">{{ "%.2f"|format(metrics.mape) }}%</div>
+                        <small>Mean Absolute % Error</small>
+                    </div>
+                    <div class="metric-item">
+                        <h5>Accuracy</h5>
+                        <div class="value">{{ "%.2f"|format(metrics.directional_accuracy) }}%</div>
+                        <small>Directional Accuracy</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plots Section -->
+            <div class="plots-section">
+                <!-- Historical Price Plot -->
+                <div class="plot-container">
+                    <h3>📈 Historical Bitcoin Price</h3>
+                    <img src="/static/historical.png" alt="Historical Price Plot">
+                    <p style="color: #666; margin-top: 10px; font-size: 0.9em;">
+                        Complete price history from 2010 to present
+                    </p>
+                </div>
+
+                <!-- Forecast Plot -->
+                <div class="plot-container">
+                    <h3>🔮 Price Forecast</h3>
+                    <img src="/static/forecast.png" alt="Forecast Plot">
+                    <p style="color: #666; margin-top: 10px; font-size: 0.9em;">
+                        Predicted prices with 95% confidence intervals for the next {{ horizon }} days
+                    </p>
+                </div>
+
+                <!-- Evaluation Plot -->
+                <div class="plot-container">
+                    <h3>✅ Model Evaluation (Test Set)</h3>
+                    <img src="/static/evaluation.png" alt="Evaluation Plot">
+                    <p style="color: #666; margin-top: 10px; font-size: 0.9em;">
+                        Actual vs Predicted prices on the test set (last 90 days)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Model Information -->
+            <div class="info-box">
+                <strong>ℹ️ About This Model:</strong>
+                This forecasting model uses Facebook's Prophet library, which is specifically designed for time series forecasting. It automatically captures:
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Trend:</strong> Long-term direction of Bitcoin price movement</li>
+                    <li><strong>Seasonality:</strong> Yearly and weekly patterns in cryptocurrency market</li>
+                    <li><strong>Changepoints:</strong> Sudden shifts in the price trend</li>
+                    <li><strong>Holidays/Events:</strong> Market anomalies</li>
+                </ul>
+                <br>
+                <strong>📌 Disclaimer:</strong> This is a machine learning model for educational purposes. 
+                Cryptocurrency markets are highly volatile and unpredictable. 
+                Do not use this prediction for financial decisions without consulting a professional advisor.
+            </div>
+        </div>
+
+        <footer>
+            <p>🚀 Time Series Cryptocurrency Market Analysis | Powered by Prophet ML & Flask</p>
+            <small>Last Updated: <span id="timestamp"></span></small>
+        </footer>
+    </div>
+
+    <script>
+        // Update timestamp
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+
+        // Add interactivity to buttons
+        document.querySelectorAll('form button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const horizon = this.value;
+                window.location.href = `/?horizon=${horizon}`;
+            });
+        });
+    </script>
+</body>
+</html>

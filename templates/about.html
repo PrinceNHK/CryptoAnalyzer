@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Bitcoin Price Forecasting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 40px;
+            line-height: 1.8;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .tech-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .tech-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .tech-card p {
+            font-size: 0.95em;
+            margin: 0;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #764ba2;
+            transform: translateX(-5px);
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>About This Project</h1>
+            <p>Time Series Cryptocurrency Market Analysis & Forecasting</p>
+        </header>
+
+        <div class="content">
+            <a href="/" class="back-link">← Back to Dashboard</a>
+
+            <h2>Project Overview</h2>
+            <p>
+                This project implements a complete time series analysis and forecasting system for Bitcoin prices 
+                using Facebook's Prophet model and a Flask web application. The goal is to predict Bitcoin's future 
+                price movements based on historical OHLCV (Open, High, Low, Close, Volume) data.
+            </p>
+
+            <h2>Technology Stack</h2>
+            <div class="tech-stack">
+                <div class="tech-card">
+                    <h4>🐍 Python</h4>
+                    <p>Core programming language for data processing and model training</p>
+                </div>
+                <div class="tech-card">
+                    <h4>📊 Pandas & NumPy</h4>
+                    <p>Data manipulation and numerical computing</p>
+                </div>
+                <div class="tech-card">
+                    <h4>🔮 Prophet</h4>
+                    <p>Facebook's time series forecasting library</p>
+                </div>
+                <div class="tech-card">
+                    <h4>📈 Matplotlib</h4>
+                    <p>Data visualization and plot generation</p>
+                </div>
+                <div class="tech-card">
+                    <h4>🌐 Flask</h4>
+                    <p>Web framework for the forecasting application</p>
+                </div>
+                <div class="tech-card">
+                    <h4>📐 Scikit-learn</h4>
+                    <p>Machine learning metrics (MAE, RMSE)</p>
+                </div>
+            </div>
+
+            <h2>Project Components</h2>
+
+            <h3>1. Data Loading & Preprocessing</h3>
+            <p>
+                The system loads Bitcoin historical data from a CSV file and performs the following operations:
+            </p>
+            <ul>
+                <li>Parse the Date column as datetime objects</li>
+                <li>Sort data chronologically</li>
+                <li>Handle missing values using forward-fill method</li>
+                <li>Reformat data into Prophet format: <code>ds</code> (date) and <code>y</code> (price)</li>
+            </ul>
+
+            <h3>2. Exploratory Data Analysis (EDA)</h3>
+            <p>
+                Comprehensive visualization of the dataset to understand patterns and characteristics:
+            </p>
+            <ul>
+                <li>Historical price trends over time</li>
+                <li>Price distribution and statistics</li>
+                <li>Daily returns analysis</li>
+                <li>Trading volume patterns</li>
+            </ul>
+
+            <h3>3. Prophet Model</h3>
+            <p>
+                The Prophet model is designed specifically for time series forecasting and can handle:
+            </p>
+            <ul>
+                <li><strong>Trend:</strong> Captures long-term upward or downward movements</li>
+                <li><strong>Seasonality:</strong> Identifies yearly and weekly patterns</li>
+                <li><strong>Changepoints:</strong> Detects sudden shifts in trend behavior</li>
+                <li><strong>Uncertainty Intervals:</strong> Provides confidence bounds for predictions</li>
+            </ul>
+
+            <h3>4. Model Evaluation</h3>
+            <p>
+                The model is evaluated on a held-out test set (last 90 days) using multiple metrics:
+            </p>
+            <ul>
+                <li><strong>MAE (Mean Absolute Error):</strong> Average magnitude of prediction errors</li>
+                <li><strong>RMSE (Root Mean Squared Error):</strong> Penalizes larger errors more heavily</li>
+                <li><strong>MAPE (Mean Absolute Percentage Error):</strong> Percentage-based error metric</li>
+                <li><strong>Directional Accuracy:</strong> Percentage of correct up/down predictions</li>
+            </ul>
+
+            <h3>5. Flask Web Application</h3>
+            <p>
+                A user-friendly web interface that provides:
+            </p>
+            <ul>
+                <li>Interactive dashboard with real-time data visualization</li>
+                <li>Historical price charts and trend analysis</li>
+                <li>30-day, 60-day, and 90-day forecast generation</li>
+                <li>Model performance metrics display</li>
+                <li>Confidence intervals for predictions</li>
+                <li>Dynamic forecast regeneration based on user input</li>
+            </ul>
+
+            <h2>Project Structure</h2>
+            <p>
+                The project is organized as follows:
+            </p>
+            <ul>
+                <li><code>app.py</code> - Main Flask application</li>
+                <li><code>data_loader.py</code> - Data loading and preprocessing functions</li>
+                <li><code>prophet_model.py</code> - Prophet model training and forecasting</li>
+                <li><code>model_evaluation.py</code> - Model evaluation metrics and visualization</li>
+                <li><code>eda.py</code> - Exploratory data analysis functions</li>
+                <li><code>templates/index.html</code> - Main dashboard HTML</li>
+                <li><code>templates/about.html</code> - This about page</li>
+                <li><code>static/</code> - Directory for generated plots and images</li>
+                <li><code>model/</code> - Directory for saved Prophet model</li>
+                <li><code>data/</code> - Directory for data files</li>
+            </ul>
+
+            <h2>How It Works</h2>
+            <ol>
+                <li>When the application starts, it loads the Bitcoin CSV file</li>
+                <li>Data is cleaned and formatted for Prophet</li>
+                <li>Historical price statistics are computed and printed</li>
+                <li>The Prophet model is trained on the entire historical dataset</li>
+                <li>Model performance is evaluated on a test set (last 90 days)</li>
+                <li>Multiple plots are generated and saved for visualization</li>
+                <li>The Flask server starts and serves the web application</li>
+                <li>Users can interact with the dashboard to view forecasts</li>
+                <li>Forecast horizon can be changed (7, 30, 60, 90 days)</li>
+                <li>The model regenerates forecasts dynamically based on user selection</li>
+            </ol>
+
+            <h2>Key Features</h2>
+            <ul>
+                <li>✅ <strong>Automated Data Pipeline:</strong> Handles loading, cleaning, and preprocessing</li>
+                <li>✅ <strong>Prophet Model:</strong> Industry-standard time series forecasting</li>
+                <li>✅ <strong>Comprehensive Evaluation:</strong> Multiple accuracy metrics</li>
+                <li>✅ <strong>Interactive Dashboard:</strong> Beautiful, responsive web interface</li>
+                <li>✅ <strong>Multiple Forecast Horizons:</strong> 7, 30, 60, and 90-day predictions</li>
+                <li>✅ <strong>Uncertainty Quantification:</strong> 95% confidence intervals</li>
+                <li>✅ <strong>Reproducible:</strong> Well-documented code with comments</li>
+            </ul>
+
+            <h2>Running the Application</h2>
+            <p>
+                To run this application:
+            </p>
+            <ol>
+                <li>Install required dependencies: <code>pip install -r requirements.txt</code></li>
+                <li>Ensure the Bitcoin CSV file is in the project directory or data folder</li>
+                <li>Run the Flask app: <code>python app.py</code></li>
+                <li>Open your browser and navigate to <code>http://localhost:5000</code></li>
+                <li>Interact with the dashboard to explore forecasts</li>
+            </ol>
+
+            <h2>Important Notes</h2>
+            <p>
+                <strong>⚠️ Disclaimer:</strong> This is an educational project designed for learning 
+                time series analysis and forecasting. Cryptocurrency markets are highly volatile and 
+                unpredictable. The predictions from this model should NOT be used for making real 
+                financial investment decisions. Always consult with a qualified financial advisor 
+                before making any investment decisions.
+            </p>
+
+            <h2>Future Enhancements</h2>
+            <ul>
+                <li>Add support for multiple cryptocurrencies (Ethereum, etc.)</li>
+                <li>Implement ARIMA and other statistical forecasting models</li>
+                <li>Add user authentication and historical forecast tracking</li>
+                <li>Create REST API for programmatic access</li>
+                <li>Deploy to cloud platforms (Heroku, AWS, Azure)</li>
+                <li>Implement real-time data updates</li>
+                <li>Add sentiment analysis from social media and news</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>🚀 Time Series Cryptocurrency Market Analysis | Powered by Prophet ML & Flask</p>
+            <small>Educational Project - For Learning Purposes Only</small>
+        </footer>
+    </div>
+</body>
+</html>
