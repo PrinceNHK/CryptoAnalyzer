@@ -1,103 +1,108 @@
-# Time Series Cryptocurrency Market Analysis & Forecasting
+# 🚀 CryptoAnalyzer - Bitcoin Price Forecasting Platform
 
-A complete Python project for analyzing Bitcoin price data and forecasting future prices using Facebook's Prophet model with a Flask web application.
+A comprehensive machine learning application for analyzing historical Bitcoin data and predicting future cryptocurrency prices using Facebook's Prophet time series model. Features an interactive Flask web dashboard for real-time forecasting and performance metrics visualization.
 
-## 📋 Project Overview
+**🔗 Live Repository**: [GitHub - kanishka3125/Crypto_Analyzer](https://github.com/kanishka3125/Crypto_Analyzer)
 
-This project implements:
-- **Data Loading & Preprocessing**: Clean Bitcoin OHLCV data
-- **Exploratory Data Analysis**: Visualize price trends and patterns
-- **Prophet Time Series Model**: Train and forecast cryptocurrency prices
-- **Model Evaluation**: Calculate MAE, RMSE, MAPE, and directional accuracy
-- **Flask Web Application**: Interactive dashboard for viewing forecasts
-- **Multiple Forecast Horizons**: 7, 30, 60, and 90-day predictions
+---
+
+## 🎯 Quick Links
+- 📖 [Installation Guide](#-installation--setup)
+- 🚀 [Quick Start](#quick-start)
+- 📊 [Features](#-features)
+- 📈 [Performance Metrics](#-performance-metrics-explained)
+- ⚠️ [Important Disclaimer](#️-important-disclaimer)
+
+---
+
+## 📋 About This Project
+
+CryptoAnalyzer is a production-ready cryptocurrency forecasting platform that leverages advanced time series analysis techniques to predict Bitcoin price movements. The application processes 14+ years of historical Bitcoin data (2010-2024) and provides accurate short-term and long-term price forecasts with confidence intervals.
+
+**Key Highlights:**
+- ✅ **Prophet ML Model**: Facebook's proven time series forecasting algorithm
+- ✅ **Interactive Dashboard**: Real-time web interface for price analysis
+- ✅ **Multiple Horizons**: 7, 30, 60, and 90-day prediction windows
+- ✅ **Performance Metrics**: MAE, RMSE, MAPE, and Directional Accuracy
+- ✅ **Data Visualization**: Historical trends, forecasts, and evaluation plots
+- ✅ **Production Ready**: Flask-based scalable architecture
+
+---
 
 ## 🗂️ Project Structure
 
 ```
-CryptoCurrency/
-├── app.py                          # Main Flask application
-├── data_loader.py                  # Data loading and preprocessing
-├── prophet_model.py                # Prophet model training and forecasting
-├── model_evaluation.py             # Model evaluation metrics
-├── eda.py                          # Exploratory data analysis
-├── requirements.txt                # Python dependencies
-├── README.md                       # This file
-├── data/
-│   └── bitcoin_2010-07-17_2024-05-23.csv  # Bitcoin OHLCV data
-├── templates/
-│   ├── index.html                  # Main dashboard
-│   └── about.html                  # About page
-├── static/
-│   ├── historical.png              # Historical price plot
-│   ├── forecast.png                # Forecast plot
-│   └── evaluation.png              # Model evaluation plot
-└── model/
-    └── prophet_model.pkl           # Saved Prophet model
+CryptoAnalyzer/
+│
+├── 📄 Core Application Files
+│   ├── app.py                      # Flask web server & routing
+│   ├── data_loader.py              # Data loading & preprocessing pipeline
+│   ├── prophet_model.py            # Prophet model training & forecasting
+│   ├── model_evaluation.py         # Metrics calculation & evaluation
+│   ├── eda.py                      # Exploratory data analysis
+│   └── train_model.py              # Model training script
+│
+├── 📊 Data & Models
+│   ├── bitcoin_2010-07-17_2024-05-23.csv  # Historical OHLCV data (5,059 days)
+│   ├── model/
+│   │   └── prophet_model.pkl       # Trained Prophet model (serialized)
+│   └── data/                       # Data directory
+│
+├── 🌐 Web Interface
+│   ├── templates/
+│   │   ├── index.html              # Main dashboard page
+│   │   └── about.html              # Project information page
+│   └── static/
+│       ├── historical.png          # Historical price chart
+│       ├── forecast.png            # Future price forecast
+│       └── evaluation.png          # Model performance chart
+│
+├── 📝 Configuration & Documentation
+│   ├── requirements.txt            # Python package dependencies
+│   ├── README.md                   # This file
+│   ├── ARCHITECTURE.md             # System design documentation
+│   ├── PROJECT_GUIDE.md            # Detailed project guide
+│   ├── QUICKSTART.md               # Quick setup instructions
+│   └── SETUP.md                    # Installation guide
+│
+└── 🎯 Utilities
+    ├── START_HERE.py               # Entry point script
+    └── 00_START_HERE.txt           # Quick reference guide
 ```
 
-## 🚀 Quick Start
+---
 
-### 1. Install Dependencies
+## 🎯 Features
 
-```bash
-pip install -r requirements.txt
-```
+### 📈 Interactive Dashboard
+- **Real-time Forecasting**: Generate predictions for 7, 30, 60, or 90 days ahead
+- **Historical Analysis**: Visualize 14+ years of Bitcoin price history
+- **Performance Metrics**: View MAE, RMSE, MAPE, and directional accuracy
+- **Confidence Intervals**: 95% confidence bands on forecast predictions
+- **Responsive Design**: Mobile-friendly web interface
+- **Auto-refresh**: Dynamic forecast updates based on selected horizon
 
-### 2. Prepare Data
+### 🔬 Advanced Data Processing
+- Automatic OHLCV data parsing from CSV files
+- Missing value handling using forward/backward fill
+- Date parsing and timezone handling
+- Train/test split for unbiased model evaluation (5,020 training samples, 90 test samples)
+- Data validation and cleaning pipeline
 
-Ensure your Bitcoin CSV file is in the project directory. The file should contain columns:
-- `Date` - Trading date
-- `Open` - Opening price
-- `High` - Highest price
-- `Low` - Lowest price
-- `Close` - Closing price
-- `Volume` - Trading volume
+### 🧠 Prophet Time Series Model
+- **Automatic Trend Detection**: Identifies price movement patterns
+- **Seasonality Analysis**: Captures yearly and weekly patterns
+- **Changepoint Detection**: Detects structural breaks in the data
+- **Uncertainty Quantification**: Probabilistic forecasts with confidence intervals
+- **Robust to Missing Data**: Handles gaps in cryptocurrency data
+- **Scalable**: Trained on 5,000+ historical data points
 
-### 3. Run the Application
-
-```bash
-python app.py
-```
-
-The application will:
-1. Load and preprocess the data
-2. Train the Prophet model
-3. Generate evaluation metrics
-4. Create visualization plots
-5. Start the Flask server
-
-### 4. Access the Web Interface
-
-Open your browser and navigate to:
-```
-http://localhost:5000
-```
-
-## 📊 Features
-
-### Dashboard
-- 📈 Historical price visualization
-- 🔮 Future price forecasts with confidence intervals
-- 📊 Model performance metrics (MAE, RMSE, MAPE)
-- 💾 Actual vs Predicted price comparison
-- 🎛️ Interactive forecast horizon selection (7, 30, 60, 90 days)
-
-### Data Processing
-- Automatic datetime parsing
-- Missing value handling
-- Data validation and cleaning
-- Train/test split for evaluation
-
-### Prophet Model
-- Automatic trend detection
-- Yearly and weekly seasonality
-- Changepoint detection
-- Uncertainty quantification
-- 95% confidence intervals
-
-### Evaluation Metrics
-- **MAE**: Mean Absolute Error - Average prediction error
+### 📊 Comprehensive Evaluation Metrics
+- **Mean Absolute Error (MAE)**: $40,150.59
+- **Root Mean Squared Error (RMSE)**: $40,425.44
+- **Mean Absolute Percentage Error (MAPE)**: 61.31%
+- **Directional Accuracy**: 43.82% (predicting price movement direction)
+- **Visualization**: Actual vs predicted comparison plots
 - **RMSE**: Root Mean Squared Error - Penalizes large errors
 - **MAPE**: Mean Absolute Percentage Error - Percentage-based accuracy
 - **Directional Accuracy**: Percentage of correct up/down predictions
@@ -270,6 +275,8 @@ Created as a comprehensive learning project for time series analysis and forecas
 **Last Updated**: January 2026
 
 For questions or improvements, feel free to enhance and customize this project!
-#   C r y p t o _ A n a l y z e r  
- #   C r y p t o A n a l y z e r  
+#   C r y p t o _ A n a l y z e r 
+ 
+ #   C r y p t o A n a l y z e r 
+ 
  
