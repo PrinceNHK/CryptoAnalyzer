@@ -271,4 +271,5 @@ Created as a comprehensive learning project for time series analysis and forecas
 
 For questions or improvements, feel free to enhance and customize this project!
 #   C r y p t o _ A n a l y z e r  
+ #   C r y p t o A n a l y z e r  
  
